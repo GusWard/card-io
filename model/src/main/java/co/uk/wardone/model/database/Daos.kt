@@ -7,13 +7,19 @@ import androidx.room.*
 interface CardDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(recording: Card)
+    fun insert(card: Card)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(cards: List<Card>)
 
     @Delete
-    fun delete(recording: Card)
+    fun delete(card: Card)
 
     @Query("select * from Card order by timestamp desc")
     fun getAll(): LiveData<List<Card>>
+
+    @Query("select * from Card order by timestamp desc limit 1")
+    fun getLatest(): Card
 
     @Query("""
         select *

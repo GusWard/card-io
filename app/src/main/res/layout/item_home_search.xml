@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/material_medium"
+    android:elevation="@dimen/global_elevation"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,6 +14,8 @@
             android:id="@+id/itemHomeSearchInput"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:hint="Search cards"
+            android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/itemHomeSearchIcon"
             app:layout_constraintStart_toStartOf="parent"

@@ -15,7 +15,7 @@ abstract class BaseViewModel(
 
     private val viewActionLiveData: MutableLiveData<BaseViewAction> = MutableLiveData()
 
-    abstract fun bindData(lifecycleOwner: LifecycleOwner, observer: Observer<BaseFragmentData>)
+    abstract fun bindData(lifecycleOwner: LifecycleOwner, observer: Observer<BaseViewData>)
 
     open fun bindActions(lifecycleOwner: LifecycleOwner, observer: Observer<BaseViewAction>) {
 

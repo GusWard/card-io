@@ -9,7 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import co.uk.wardone.cardio.R
-import co.uk.wardone.viewmodel.base.BaseFragmentData
+import co.uk.wardone.viewmodel.base.BaseViewData
 import co.uk.wardone.viewmodel.base.BaseViewAction
 import co.uk.wardone.viewmodel.base.BaseViewModel
 import co.uk.wardone.viewmodel.base.BaseViewModelAction
@@ -48,8 +48,8 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
 
         super.onActivityCreated(savedInstanceState)
-        viewModel.bindData(viewLifecycleOwner, Observer { onFragmentData(it) })
-        viewModel.bindActions(viewLifecycleOwner, Observer { onFragmentAction(it) })
+        viewModel.bindData(viewLifecycleOwner, Observer { onViewData(it) })
+        viewModel.bindActions(viewLifecycleOwner, Observer { onViewAction(it) })
     }
 
     protected fun viewModelAction(viewAction: BaseViewModelAction) {
@@ -57,9 +57,9 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment() {
         viewModel.viewModelAction(viewAction, this)
     }
 
-    abstract fun onFragmentData(fragmentData: BaseFragmentData)
+    abstract fun onViewData(viewData: BaseViewData)
 
-    abstract fun onFragmentAction(viewAction: BaseViewAction)
+    abstract fun onViewAction(viewAction: BaseViewAction)
 
     protected fun getLayout(): View? = layout
 

@@ -5,6 +5,7 @@ import co.uk.wardone.viewmodel.base.BaseViewModelAction
 
 class HomeViewModelActions {
 
+    data class Search(val query: String) : BaseViewModelAction
 }
 
 class HomeViewActions {

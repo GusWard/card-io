@@ -1,29 +1,87 @@
 package co.uk.wardone.cardio.fragments.home
 
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import co.uk.wardone.cardio.R
 import co.uk.wardone.cardio.core.BaseViewHolder
 import co.uk.wardone.cardio.core.BaseViewHolderFactory
 import co.uk.wardone.viewmodel.base.BaseRecyclerItem
+import co.uk.wardone.viewmodel.base.BaseViewModelAction
+import co.uk.wardone.viewmodel.fragment.home.HomeData
+import co.uk.wardone.viewmodel.fragment.home.HomeItemTypes
+import co.uk.wardone.viewmodel.fragment.home.HomeViewModelActions
+import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.item_home_card.view.*
+import kotlinx.android.synthetic.main.item_home_search.view.*
 
 
-class HomeViewHolderFactory : BaseViewHolderFactory() {
+class HomeViewHolderFactory(override var viewModelAction: (action: BaseViewModelAction) -> Unit) : BaseViewHolderFactory(viewModelAction) {
 
     override fun createViewHolder(parent: ViewGroup, type: Int): BaseViewHolder {
 
         return when (type) {
 
+            HomeItemTypes.SEARCH -> {
+
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_home_search, parent, false)
+                SearchViewHolder(view)
+            }
+
+            HomeItemTypes.CARD -> {
+
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_home_card, parent, false)
+                CardViewHolder(view)
+            }
             else -> throw IllegalArgumentException("unknown view type $type")
         }
     }
 
-    inner class TranscriptViewHolder(itemView: View) : BaseViewHolder(itemView) {
+    inner class SearchViewHolder(itemView: View) : BaseViewHolder(itemView) {
 
         override fun bind(item: BaseRecyclerItem, position: Int) {
 
-            when (item) {
+            if (item is HomeData.SearchItem) {
 
+                itemView.itemHomeSearchInput.addTextChangedListener(object: TextWatcher {
 
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+                        viewModelAction(HomeViewModelActions.Search(s.toString()))
+                    }
+
+                    override fun afterTextChanged(s: Editable?) {}
+                })
+            }
+        }
+    }
+
+    inner class CardViewHolder(itemView: View) : BaseViewHolder(itemView) {
+
+        override fun bind(item: BaseRecyclerItem, position: Int) {
+
+            if (item is HomeData.CardItem) {
+
+                itemView.itemHomeCardTitle?.text = item.title
+                itemView.itemHomeCardDescription?.text = item.description
+
+                itemView.itemHomeCardLink?.text = item.link ?: ""
+                itemView.itemHomeCardLink?.visibility = if (item.link.isNullOrEmpty()) View.GONE else View.VISIBLE
+
+                itemView.itemHomeCardImage?.visibility = if (item.image.isNullOrEmpty()) View.GONE else View.VISIBLE
+
+                if (itemView.itemHomeCardImage != null && item.image != null) {
+
+                    Glide.with(itemView)
+                        .load(item.image)
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_baseline_image_48)
+                        .into(itemView.itemHomeCardImage)
+                }
             }
         }
     }
