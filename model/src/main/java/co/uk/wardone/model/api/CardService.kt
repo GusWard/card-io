@@ -1,5 +1,6 @@
 package co.uk.wardone.model.api
 
+import co.uk.wardone.model.database.Card
 import co.uk.wardone.model.repositories.CardRepository
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -25,7 +26,7 @@ interface CardService {
     }
 
     @GET("/")
-    fun getCardsSince(@Query("since") since: Long) : Call<CardResponse>
+    fun getCards() : Call<CardResponse>
 
     @PUT("/")
     fun putCard(@Body card: Card) : Call<ResponseBody>

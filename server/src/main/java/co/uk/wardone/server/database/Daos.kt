@@ -12,6 +12,6 @@ interface CardDao {
     @Delete
     fun delete(recording: Card)
 
-    @Query("select * from Card where timestamp > :since order by timestamp desc")
-    fun getAll(since: Long): List<Card>
+    @Query("select * from Card order by timestamp desc")
+    fun getAll(): List<Card>
 }

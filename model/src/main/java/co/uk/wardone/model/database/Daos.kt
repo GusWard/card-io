@@ -15,8 +15,14 @@ interface CardDao {
     @Delete
     fun delete(card: Card)
 
+    @Delete
+    fun deleteAll(card: List<Card>)
+
     @Query("select * from Card order by timestamp desc")
     fun getAll(): LiveData<List<Card>>
+
+    @Query("select * from Card order by timestamp desc")
+    fun getAllSync(): List<Card>
 
     @Query("select * from Card order by timestamp desc limit 1")
     fun getLatest(): Card

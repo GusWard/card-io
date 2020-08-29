@@ -6,6 +6,8 @@ import co.uk.wardone.server.database.CardServerDatabase
 import com.google.gson.Gson
 import fi.iki.elonen.NanoHTTPD
 
+data class ArrayResponse(val length: Int, val data: List<Any>)
+
 class CardServer(context: Context) : NanoHTTPD(8080) {
 
     companion object {
@@ -20,7 +22,7 @@ class CardServer(context: Context) : NanoHTTPD(8080) {
 
         return when (session?.method) {
 
-            Method.GET -> getAllCards(session)
+            Method.GET -> getAllCards()
             Method.PUT -> putCard(session)
             Method.DELETE -> deleteCard(session)
             else -> {
@@ -35,12 +37,10 @@ class CardServer(context: Context) : NanoHTTPD(8080) {
         }
     }
 
-    private fun getAllCards(session: IHTTPSession): Response {
+    private fun getAllCards(): Response {
 
-
-        val since = session.parms["since"]?.toLongOrNull() ?: 0L
         val dao = db?.getCardDao()
-        val cards = dao?.getAll(since)
+        val cards = dao?.getAll()
 
         return when {
 

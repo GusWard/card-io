@@ -23,24 +23,21 @@ class CardRepository(val database: AppDatabase) : BaseRepository<CardDao>() {
     override fun refresh() {
 
         val cardDao = getDao()
-        val latestCard = cardDao?.getLatest()
         val cardService = CardService.create()
-        val newCardCall = cardService.getCardsSince(latestCard?.timeStamp ?: 0)
+        val newCardCall = cardService.getCards()
+
         newCardCall.enqueue(object: Callback<CardResponse>{
 
             override fun onResponse(call: Call<CardResponse>, response: Response<CardResponse>) {
 
-                val newCards = response.body()
-                cardDao?.insertAll(newCards?.data?.map {
-
-                    Card(
-                        id = it.id,
-                        title = it.title,
-                        description = it.description,
-                        image = it.image,
-                        link = it.link,
-                        timeStamp = it.timeStamp)
-                } ?: emptyList())
+                /* We need to make sure we stay in sync with server db so delete any missing ones
+                *  then create or update the latest ones */
+                val currentCards = cardDao?.getAllSync()
+                val latestCards = response.body()
+                val cardsToDelete = currentCards?.toHashSet()
+                cardsToDelete?.removeAll(latestCards?.data ?: emptyList())
+                cardDao?.deleteAll(cardsToDelete?.toList() ?: emptyList())
+                cardDao?.insertAll(latestCards?.data ?: emptyList())
             }
 
             override fun onFailure(call: Call<CardResponse>, t: Throwable) {
@@ -48,5 +45,50 @@ class CardRepository(val database: AppDatabase) : BaseRepository<CardDao>() {
                 Log.e(TAG, "failed fetching cards", t)
             }
         })
+    }
+
+    fun addCard(card: Card, onFailure: (String) -> Unit) {
+
+        val cardService = CardService.create()
+        val putCardCall = cardService.putCard(card)
+
+        putCardCall.enqueue(object: Callback<ResponseBody> {
+
+            /* we only want to add the card to our app db on success */
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+
+                refresh()
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+
+                Log.e(TAG, "failed adding card", t)
+                onFailure("failed fetching cards: " + t.message)
+            }
+        })
+    }
+
+    fun deleteCard(card: Card, onFailure: (String) -> Unit) {
+
+        val dao = getDao()
+        val cardService = CardService.create()
+        val deleteCardCall = cardService.deleteCard(card)
+
+        dao?.let {
+
+            deleteCardCall.enqueue(object: Callback<ResponseBody> {
+
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+
+                    refresh()
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+
+                    Log.e(TAG, "failed adding card", t)
+                    onFailure("failed fetching cards: " + t.message)
+                }
+            })
+        }
     }
 }
