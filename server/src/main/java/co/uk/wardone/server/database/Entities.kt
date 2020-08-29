@@ -1,4 +1,4 @@
-package co.uk.wardone.model.database
+package co.uk.wardone.server.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

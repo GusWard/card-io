@@ -9,16 +9,13 @@ import co.uk.wardone.viewmodel.activity.MainActivityViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    companion object {
-
-        private const val TAG = "MainActivity"
-    }
-
     private val mainActivityViewModel = MainActivityViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+
+        mainActivityViewModel.onActivityCreate(this)
 
         setContentView(R.layout.activity_main)
         supportFragmentManager.beginTransaction()
@@ -33,7 +30,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
 
+        super.onDestroy()
+        mainActivityViewModel.onActivityDestroy()
     }
 }

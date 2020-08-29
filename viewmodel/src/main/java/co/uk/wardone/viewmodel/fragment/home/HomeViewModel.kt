@@ -21,8 +21,6 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
         lifecycleOwner: LifecycleOwner
     ) {
 
-        when (action) {
 
-        }
     }
 }

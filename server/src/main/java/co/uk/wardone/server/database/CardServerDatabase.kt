@@ -1,23 +1,23 @@
-package co.uk.wardone.model.database
+package co.uk.wardone.server.database
 
 import android.content.Context
 
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import co.uk.wardone.model.utils.Keys
+import co.uk.wardone.server.utils.Keys
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SupportFactory
 
 @Database(entities = [Card::class], version = 1)
-abstract class AppDatabase : RoomDatabase() {
+abstract class CardServerDatabase : RoomDatabase() {
 
     companion object {
 
         private const val DATABASE_NAME = "app_database"
-        private var instance: AppDatabase? = null
+        private var instance: CardServerDatabase? = null
 
-        fun getInstance(context: Context): AppDatabase? {
+        fun getInstance(context: Context): CardServerDatabase? {
 
             if (instance == null) {
 
@@ -27,14 +27,14 @@ abstract class AppDatabase : RoomDatabase() {
             return instance
         }
 
-        private fun buildDatabase(context: Context): AppDatabase {
+        private fun buildDatabase(context: Context): CardServerDatabase {
 
             /* as this is medical data, we want our database to be encrypted */
             val key = Keys().getDatabaseEncryptionKey()
             val passphrase: ByteArray = SQLiteDatabase.getBytes(key.toCharArray())
             val encryptionHelper = SupportFactory(passphrase)
 
-            val dbBuilder = Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
+            val dbBuilder = Room.databaseBuilder(context, CardServerDatabase::class.java, DATABASE_NAME)
                 .allowMainThreadQueries()
                 .openHelperFactory(encryptionHelper)
 
