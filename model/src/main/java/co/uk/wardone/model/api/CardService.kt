@@ -1,12 +1,11 @@
 package co.uk.wardone.model.api
 
+import co.uk.wardone.model.repositories.CardRepository
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Retrofit
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.PUT
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.*
 
 interface CardService {
 
@@ -18,6 +17,7 @@ interface CardService {
 
             val retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
             return retrofit.create(CardService::class.java)
@@ -25,7 +25,7 @@ interface CardService {
     }
 
     @GET("/")
-    fun getCardsSince(since: Long) : Call<CardResponse>
+    fun getCardsSince(@Query("since") since: Long) : Call<CardResponse>
 
     @PUT("/")
     fun putCard(@Body card: Card) : Call<ResponseBody>

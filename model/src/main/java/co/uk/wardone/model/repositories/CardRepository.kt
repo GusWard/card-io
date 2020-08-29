@@ -6,6 +6,7 @@ import co.uk.wardone.model.api.CardService
 import co.uk.wardone.model.database.AppDatabase
 import co.uk.wardone.model.database.Card
 import co.uk.wardone.model.database.CardDao
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

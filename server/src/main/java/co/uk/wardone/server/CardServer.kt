@@ -11,6 +11,7 @@ class CardServer(context: Context) : NanoHTTPD(8080) {
     companion object {
 
         private const val TAG = "CardServer"
+        private const val MIME_APP_JSON = "application/json"
     }
 
     private val db = CardServerDatabase.getInstance(context)
@@ -60,7 +61,7 @@ class CardServer(context: Context) : NanoHTTPD(8080) {
                 val length = cards.size
                 val arrayResponse = ArrayResponse(length, cards)
                 val json = Gson().toJson(arrayResponse)
-                newFixedLengthResponse(Response.Status.OK, MIME_PLAINTEXT, json)
+                newFixedLengthResponse(Response.Status.OK, MIME_APP_JSON, json)
             }
         }
     }

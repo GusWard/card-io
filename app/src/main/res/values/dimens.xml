@@ -8,5 +8,6 @@
     <dimen name="material_xlarge">24dp</dimen>
     <dimen name="material_xxlarge">32dp</dimen>
 
-    <dimen name="global_elevation">@dimen/material_medium</dimen>
+    <dimen name="global_elevation">6dp</dimen>
+    <dimen name="global_corner_radius">@dimen/material_medium</dimen>
 </resources>
