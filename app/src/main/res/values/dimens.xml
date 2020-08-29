@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="header_text_size">26sp</dimen>
-    <dimen name="item_text_size">20sp</dimen>
-    <dimen name="twenty_four_dp">24dp</dimen>
+    <dimen name="material_tiny">2dp</dimen>
+    <dimen name="material_small">4dp</dimen>
+    <dimen name="material_medium">8dp</dimen>
+    <dimen name="material_large">16dp</dimen>
+    <dimen name="material_xlarge">24dp</dimen>
+    <dimen name="material_xxlarge">32dp</dimen>
+
+    <dimen name="global_elevation">@dimen/material_medium</dimen>
 </resources>
