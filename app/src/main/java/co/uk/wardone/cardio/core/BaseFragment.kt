@@ -13,6 +13,7 @@ import co.uk.wardone.viewmodel.base.BaseViewData
 import co.uk.wardone.viewmodel.base.BaseViewAction
 import co.uk.wardone.viewmodel.base.BaseViewModel
 import co.uk.wardone.viewmodel.base.BaseViewModelAction
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 abstract class BaseFragment<T : BaseViewModel> : Fragment() {
 
@@ -72,7 +73,7 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment() {
 
     abstract fun initViews(layout: View?)
 
-    private fun loadFragment(fragment: BaseFragment<*>, addToBackStack: Boolean = true, tag: String? = null) {
+    protected fun loadFragment(fragment: BaseFragment<*>, addToBackStack: Boolean = true, tag: String? = null) {
 
         val fragmentTransaction = fragmentManager
             ?.beginTransaction()
@@ -92,7 +93,7 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment() {
         fragmentTransaction?.commit()
     }
 
-    private fun showCancelableDialog(title: String, message: String, positiveText: String = "OK", positiveAction: () -> Unit) {
+    protected fun showCancelableDialog(title: String, message: String, positiveText: String = "OK", positiveAction: () -> Unit) {
 
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
         builder.setTitle(title)

@@ -54,7 +54,6 @@ class CardRepository(val database: AppDatabase) : BaseRepository<CardDao>() {
 
         putCardCall.enqueue(object: Callback<ResponseBody> {
 
-            /* we only want to add the card to our app db on success */
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
 
                 refresh()
@@ -63,7 +62,7 @@ class CardRepository(val database: AppDatabase) : BaseRepository<CardDao>() {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
 
                 Log.e(TAG, "failed adding card", t)
-                onFailure("failed fetching cards: " + t.message)
+                onFailure("failed adding card: " + t.message)
             }
         })
     }
@@ -85,8 +84,8 @@ class CardRepository(val database: AppDatabase) : BaseRepository<CardDao>() {
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
 
-                    Log.e(TAG, "failed adding card", t)
-                    onFailure("failed fetching cards: " + t.message)
+                    Log.e(TAG, "failed deleting card", t)
+                    onFailure("failed deleting card: " + t.message)
                 }
             })
         }

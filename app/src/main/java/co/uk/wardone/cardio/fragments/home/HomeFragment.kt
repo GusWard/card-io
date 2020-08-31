@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import co.uk.wardone.cardio.R
 import co.uk.wardone.cardio.core.BaseFragment
 import co.uk.wardone.cardio.core.CoreRecyclerViewAdapter
+import co.uk.wardone.cardio.fragments.create.CreateCardFragment
 import co.uk.wardone.viewmodel.base.BaseViewData
 import co.uk.wardone.viewmodel.base.BaseViewAction
 import co.uk.wardone.viewmodel.fragment.home.HomeData
@@ -20,13 +21,10 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
 
     override fun getLayoutRes(): Int = R.layout.fragment_home
 
-    override fun createViewModel(): HomeViewModel
-            = ViewModelProvider(
-        this, ViewModelProvider.AndroidViewModelFactory.getInstance(
-            requireActivity().application
-        )
-    )
-        .get<HomeViewModel>(HomeViewModel::class.java)
+    override fun createViewModel(): HomeViewModel = ViewModelProvider(
+        this,
+        ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+    ).get<HomeViewModel>(HomeViewModel::class.java)
 
     override fun initViewModel(viewModel: HomeViewModel) {}
 
@@ -36,6 +34,11 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
 
             fragmentHomeRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
             fragmentHomeRecyclerView?.adapter = homeAdapter
+
+            fragmentHomeFab?.setOnClickListener {
+
+                loadFragment(CreateCardFragment(), true, "create-fragment")
+            }
         }
     }
 

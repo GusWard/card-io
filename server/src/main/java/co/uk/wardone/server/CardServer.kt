@@ -39,30 +39,42 @@ class CardServer(context: Context) : NanoHTTPD(8080) {
 
     private fun getAllCards(): Response {
 
-        val dao = db?.getCardDao()
-        val cards = dao?.getAll()
+        try{
 
-        return when {
+            val dao = db?.getCardDao()
+            val cards = dao?.getAll()
 
-            dao == null -> {
+            return when {
 
-                newFixedLengthResponse(
-                    Response.Status.INTERNAL_ERROR,
-                    MIME_PLAINTEXT,
-                    "Internal server error"
-                )
+                dao == null -> {
+
+                    newFixedLengthResponse(
+                        Response.Status.INTERNAL_ERROR,
+                        MIME_PLAINTEXT,
+                        "Internal server error"
+                    )
+                }
+                cards == null -> {
+
+                    newFixedLengthResponse(Response.Status.NOT_FOUND, MIME_PLAINTEXT, "Not found")
+                }
+                else -> {
+
+                    val length = cards.size
+                    val arrayResponse = ArrayResponse(length, cards)
+                    val json = Gson().toJson(arrayResponse)
+                    newFixedLengthResponse(Response.Status.OK, MIME_APP_JSON, json)
+                }
             }
-            cards == null -> {
 
-                newFixedLengthResponse(Response.Status.NOT_FOUND, MIME_PLAINTEXT, "Not found")
-            }
-            else -> {
+        } catch (e: Exception) {
 
-                val length = cards.size
-                val arrayResponse = ArrayResponse(length, cards)
-                val json = Gson().toJson(arrayResponse)
-                newFixedLengthResponse(Response.Status.OK, MIME_APP_JSON, json)
-            }
+            Log.e(TAG, "failed getting cards", e)
+            return newFixedLengthResponse(
+                Response.Status.INTERNAL_ERROR,
+                MIME_PLAINTEXT,
+                e.message
+            )
         }
     }
 

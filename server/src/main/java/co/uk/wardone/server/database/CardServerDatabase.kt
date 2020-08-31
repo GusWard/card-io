@@ -9,12 +9,12 @@ import co.uk.wardone.server.utils.Keys
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SupportFactory
 
-@Database(entities = [Card::class], version = 1)
+@Database(entities = [ServerCard::class], version = 1)
 abstract class CardServerDatabase : RoomDatabase() {
 
     companion object {
 
-        private const val DATABASE_NAME = "app_database"
+        private const val DATABASE_NAME = "server_database"
         private var instance: CardServerDatabase? = null
 
         fun getInstance(context: Context): CardServerDatabase? {
