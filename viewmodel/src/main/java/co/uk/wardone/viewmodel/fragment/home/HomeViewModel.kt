@@ -5,7 +5,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import co.uk.wardone.model.database.AppDatabase
-import co.uk.wardone.model.database.Card
 import co.uk.wardone.model.repositories.CardRepository
 import co.uk.wardone.viewmodel.base.BaseViewData
 import co.uk.wardone.viewmodel.base.BaseViewModel
@@ -36,7 +35,18 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
 
         when (action) {
 
+            is HomeViewModelActions.Search -> {
 
+
+            }
+
+            is HomeViewModelActions.DeleteCard -> {
+
+                cardRepository?.deleteCard(action.id) { error ->
+
+                    viewAction(HomeViewActions.DeleteCardFailed(error))
+                }
+            }
         }
     }
 

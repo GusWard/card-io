@@ -6,6 +6,7 @@ import co.uk.wardone.server.database.CardServerDatabase
 import co.uk.wardone.server.database.ServerCard
 import com.google.gson.Gson
 import fi.iki.elonen.NanoHTTPD
+import java.lang.IllegalArgumentException
 
 data class ArrayResponse(val length: Int, val data: List<Any>)
 
@@ -102,6 +103,28 @@ class CardServer(context: Context) : NanoHTTPD(8080) {
 
     private fun deleteCard(session: IHTTPSession): Response {
 
-        return newFixedLengthResponse("not implemented")
+        return try {
+
+            val data = mutableMapOf<String, String>()
+            session.parseBody(data)
+            val dao = db?.getCardDao()
+            val id = session.parms["id"]
+            if (id == null) {
+
+                throw IllegalArgumentException("Must provide id")
+            } else {
+
+                dao?.delete(id.toLong())
+                newFixedLengthResponse(Response.Status.OK, MIME_PLAINTEXT, id)
+            }
+        } catch (e: Exception) {
+
+            Log.e(TAG, "failed adding card", e)
+            newFixedLengthResponse(
+                Response.Status.INTERNAL_ERROR,
+                MIME_PLAINTEXT,
+                e.message
+            )
+        }
     }
 }

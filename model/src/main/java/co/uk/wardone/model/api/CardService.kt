@@ -32,5 +32,5 @@ interface CardService {
     fun putCard(@Body card: Card) : Call<ResponseBody>
 
     @DELETE("/")
-    fun deleteCard(@Body card: Card) : Call<ResponseBody>
+    fun deleteCard(@Query("id") id: String) : Call<ResponseBody>
 }

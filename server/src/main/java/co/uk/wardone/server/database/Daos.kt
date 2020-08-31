@@ -8,8 +8,8 @@ interface CardDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(recording: ServerCard)
 
-    @Delete
-    fun delete(recording: ServerCard)
+    @Query("delete from ServerCard where id = :id")
+    fun delete(id: Long)
 
     @Query("select * from ServerCard order by timestamp desc")
     fun getAll(): List<ServerCard>

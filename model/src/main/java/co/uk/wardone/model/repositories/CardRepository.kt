@@ -68,11 +68,11 @@ class CardRepository(val database: AppDatabase) : BaseRepository<CardDao>() {
         })
     }
 
-    fun deleteCard(card: Card, onFailure: (String) -> Unit) {
+    fun deleteCard(id: String, onFailure: (String) -> Unit) {
 
         val dao = getDao()
         val cardService = CardService.create()
-        val deleteCardCall = cardService.deleteCard(card)
+        val deleteCardCall = cardService.deleteCard(id)
 
         dao?.let {
 

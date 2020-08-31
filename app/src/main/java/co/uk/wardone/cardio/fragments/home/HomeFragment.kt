@@ -10,13 +10,17 @@ import co.uk.wardone.cardio.fragments.create.CreateCardFragment
 import co.uk.wardone.viewmodel.base.BaseViewData
 import co.uk.wardone.viewmodel.base.BaseViewAction
 import co.uk.wardone.viewmodel.fragment.home.HomeData
+import co.uk.wardone.viewmodel.fragment.home.HomeViewActions
 import co.uk.wardone.viewmodel.fragment.home.HomeViewModel
+import co.uk.wardone.viewmodel.fragment.home.HomeViewModelActions
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
 
 class HomeFragment : BaseFragment<HomeViewModel>() {
 
-    private val homeViewHolderFactory = HomeViewHolderFactory(::viewModelAction)
+    private val homeViewHolderFactory = HomeViewHolderFactory(::viewModelAction, viewAction = { action, _, _ ->
+        onViewAction(action)
+    })
     private val homeAdapter = CoreRecyclerViewAdapter(homeViewHolderFactory)
 
     override fun getLayoutRes(): Int = R.layout.fragment_home
@@ -57,6 +61,15 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
 
         when (viewAction) {
 
+            is HomeViewActions.VerifyDeleteCard -> {
+
+                showCancelableDialog(
+                    title = "Delete card?",
+                    message = "This cannot be undone") {
+
+                    viewModelAction(HomeViewModelActions.DeleteCard(viewAction.id))
+                }
+            }
         }
     }
 }

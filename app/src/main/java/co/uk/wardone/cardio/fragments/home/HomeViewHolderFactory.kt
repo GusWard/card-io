@@ -9,19 +9,23 @@ import co.uk.wardone.cardio.R
 import co.uk.wardone.cardio.core.BaseViewHolder
 import co.uk.wardone.cardio.core.BaseViewHolderFactory
 import co.uk.wardone.viewmodel.base.BaseRecyclerItem
+import co.uk.wardone.viewmodel.base.BaseViewAction
 import co.uk.wardone.viewmodel.base.BaseViewModelAction
 import co.uk.wardone.viewmodel.fragment.home.HomeData
 import co.uk.wardone.viewmodel.fragment.home.HomeItemTypes
+import co.uk.wardone.viewmodel.fragment.home.HomeViewActions
 import co.uk.wardone.viewmodel.fragment.home.HomeViewModelActions
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import kotlinx.android.synthetic.main.item_home_card.view.*
 import kotlinx.android.synthetic.main.item_home_search.view.*
 
 
-class HomeViewHolderFactory(override var viewModelAction: (action: BaseViewModelAction) -> Unit) : BaseViewHolderFactory(viewModelAction) {
+class HomeViewHolderFactory(
+    override var viewModelAction: (action: BaseViewModelAction) -> Unit,
+    override var viewAction: (action: BaseViewAction, item: BaseRecyclerItem, view: View) -> Unit
+) : BaseViewHolderFactory(viewModelAction) {
 
     override fun createViewHolder(parent: ViewGroup, type: Int): BaseViewHolder {
 
@@ -76,7 +80,6 @@ class HomeViewHolderFactory(override var viewModelAction: (action: BaseViewModel
                 itemView.itemHomeCardLink?.visibility = if (item.link.isNullOrEmpty()) View.GONE else View.VISIBLE
 
                 itemView.itemHomeCardImage?.visibility = if (item.image.isNullOrEmpty()) View.GONE else View.VISIBLE
-
                 if (itemView.itemHomeCardImage != null && item.image != null) {
 
                     Glide.with(itemView)
@@ -84,6 +87,12 @@ class HomeViewHolderFactory(override var viewModelAction: (action: BaseViewModel
                         .transform(CenterCrop(), RoundedCorners(20))
                         .placeholder(R.drawable.ic_baseline_image_48)
                         .into(itemView.itemHomeCardImage)
+                }
+
+                itemView.setOnLongClickListener {
+
+                    viewAction(HomeViewActions.VerifyDeleteCard(item.id), item, itemView)
+                    true
                 }
             }
         }
