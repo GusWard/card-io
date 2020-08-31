@@ -28,7 +28,7 @@ interface CardService {
     @GET("/")
     fun getCards() : Call<CardResponse>
 
-    @PUT("/")
+    @POST("/")
     fun putCard(@Body card: Card) : Call<ResponseBody>
 
     @DELETE("/")

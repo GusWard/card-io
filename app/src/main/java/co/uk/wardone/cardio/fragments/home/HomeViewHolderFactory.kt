@@ -14,6 +14,9 @@ import co.uk.wardone.viewmodel.fragment.home.HomeData
 import co.uk.wardone.viewmodel.fragment.home.HomeItemTypes
 import co.uk.wardone.viewmodel.fragment.home.HomeViewModelActions
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.FitCenter
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import kotlinx.android.synthetic.main.item_home_card.view.*
 import kotlinx.android.synthetic.main.item_home_search.view.*
 
@@ -78,7 +81,7 @@ class HomeViewHolderFactory(override var viewModelAction: (action: BaseViewModel
 
                     Glide.with(itemView)
                         .load(item.image)
-                        .centerCrop()
+                        .transform(CenterCrop(), RoundedCorners(20))
                         .placeholder(R.drawable.ic_baseline_image_48)
                         .into(itemView.itemHomeCardImage)
                 }

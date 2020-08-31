@@ -32,6 +32,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 style="@style/AppTextInputStyle"
+                android:id="@+id/createFragmentTitleInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -45,6 +46,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 style="@style/AppTextInputStyle"
+                android:id="@+id/createFragmentDescriptionInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -58,6 +60,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 style="@style/AppTextInputStyle"
+                android:id="@+id/createFragmentLinkInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -71,6 +74,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 style="@style/AppTextInputStyle"
+                android:id="@+id/createFragmentImageInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -79,8 +83,8 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView"
         style="@style/Button"
+        android:id="@+id/createFragmentCreateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/material_large"
@@ -91,6 +95,7 @@
 
     <TextView
         style="@style/Button"
+        android:id="@+id/createFragmentCancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/material_large"

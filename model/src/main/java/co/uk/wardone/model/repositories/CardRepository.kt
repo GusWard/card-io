@@ -47,7 +47,7 @@ class CardRepository(val database: AppDatabase) : BaseRepository<CardDao>() {
         })
     }
 
-    fun addCard(card: Card, onFailure: (String) -> Unit) {
+    fun addCard(card: Card, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
 
         val cardService = CardService.create()
         val putCardCall = cardService.putCard(card)
@@ -57,6 +57,7 @@ class CardRepository(val database: AppDatabase) : BaseRepository<CardDao>() {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
 
                 refresh()
+                onSuccess()
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {

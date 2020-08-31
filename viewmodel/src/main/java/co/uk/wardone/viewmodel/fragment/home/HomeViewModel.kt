@@ -36,19 +36,7 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
 
         when (action) {
 
-            is HomeViewModelActions.CreateCard -> {
 
-                /* allow the server to generate id & timestamp */
-                cardRepository?.addCard(Card(
-                    title = action.title,
-                    description = action.description,
-                    image = action.image ?: "",
-                    link = action.link ?: ""
-                )) { errorMessage ->
-
-                    viewAction(HomeViewActions.MakeToast(errorMessage))
-                }
-            }
         }
     }
 

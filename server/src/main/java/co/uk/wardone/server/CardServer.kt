@@ -3,6 +3,7 @@ package co.uk.wardone.server
 import android.content.Context
 import android.util.Log
 import co.uk.wardone.server.database.CardServerDatabase
+import co.uk.wardone.server.database.ServerCard
 import com.google.gson.Gson
 import fi.iki.elonen.NanoHTTPD
 
@@ -23,7 +24,7 @@ class CardServer(context: Context) : NanoHTTPD(8080) {
         return when (session?.method) {
 
             Method.GET -> getAllCards()
-            Method.PUT -> putCard(session)
+            Method.POST -> putCard(session)
             Method.DELETE -> deleteCard(session)
             else -> {
 
@@ -39,7 +40,7 @@ class CardServer(context: Context) : NanoHTTPD(8080) {
 
     private fun getAllCards(): Response {
 
-        try{
+        try {
 
             val dao = db?.getCardDao()
             val cards = dao?.getAll()
@@ -80,11 +81,23 @@ class CardServer(context: Context) : NanoHTTPD(8080) {
 
     private fun putCard(session: IHTTPSession): Response {
 
-        Log.i(TAG, session.parms.toString())
-        Log.i(TAG, session.parms.toString())
-        Log.i(TAG, session.parms.toString())
-        Log.i(TAG, session.parms.toString())
-        return newFixedLengthResponse("not implemented")
+        return try {
+
+            val data = mutableMapOf<String, String>()
+            session.parseBody(data)
+            val dao = db?.getCardDao()
+            val card = Gson().fromJson<ServerCard>(data["postData"], ServerCard::class.java)
+            val id = dao?.insert(card)
+            newFixedLengthResponse(Response.Status.OK, MIME_PLAINTEXT, "$id")
+        } catch (e: Exception) {
+
+            Log.e(TAG, "failed adding card", e)
+            newFixedLengthResponse(
+                Response.Status.INTERNAL_ERROR,
+                MIME_PLAINTEXT,
+                e.message
+            )
+        }
     }
 
     private fun deleteCard(session: IHTTPSession): Response {
