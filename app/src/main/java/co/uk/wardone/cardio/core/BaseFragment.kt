@@ -55,7 +55,7 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment() {
 
     protected fun viewModelAction(viewAction: BaseViewModelAction) {
 
-        viewModel.viewModelAction(viewAction, this)
+        viewModel.viewModelAction(viewAction)
     }
 
     abstract fun onViewData(viewData: BaseViewData)
