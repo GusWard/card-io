@@ -39,17 +39,17 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/material_medium"
             android:textColor="@color/link_blue"
-            android:maxLines="1"
             android:ellipsize="marquee"
+            android:singleLine="true"
             app:layout_constraintTop_toBottomOf="@id/itemHomeCardDescription"
-            tools:text="Card View Link"/>
+            tools:text="Card View Link" />
 
         <ImageView
             android:id="@+id/itemHomeCardImage"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_marginTop="@dimen/material_medium"
-            app:layout_constraintTop_toBottomOf="@id/itemHomeCardDescription"/>
+            app:layout_constraintTop_toBottomOf="@id/itemHomeCardLink"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

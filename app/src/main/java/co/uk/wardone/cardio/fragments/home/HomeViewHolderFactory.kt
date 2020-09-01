@@ -99,6 +99,7 @@ class HomeViewHolderFactory(
                 if (item.link.isNullOrEmpty()) {
 
                     itemView.itemHomeCardLink?.visibility = View.GONE
+                    itemView.setOnLongClickListener(null)
                 } else {
 
                     itemView.itemHomeCardLink.visibility = View.VISIBLE

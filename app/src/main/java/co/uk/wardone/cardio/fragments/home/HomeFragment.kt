@@ -3,8 +3,10 @@ package co.uk.wardone.cardio.fragments.home
 import android.content.Intent
 import android.net.Uri
 import android.view.View
+import android.widget.AbsListView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import co.uk.wardone.cardio.R
 import co.uk.wardone.cardio.core.BaseFragment
 import co.uk.wardone.cardio.core.CoreRecyclerViewAdapter
@@ -42,6 +44,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
 
             fragmentHomeRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
             fragmentHomeRecyclerView?.adapter = homeAdapter
+            initScrollListener()
 
             fragmentHomeFab?.setOnClickListener {
 
@@ -83,5 +86,42 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
                 startActivity(i)
             }
         }
+    }
+
+    private fun View.initScrollListener() {
+
+        /* https://stackoverflow.com/questions/29024058/recyclerview-scrolled-up-down-listener */
+        fragmentHomeRecyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+
+                    fragmentHomeFab?.setImageResource(R.drawable.ic_baseline_keyboard_arrow_up_48)
+                    fragmentHomeFab?.setOnClickListener {
+
+                        fragmentHomeRecyclerView?.smoothScrollToPosition(0)
+                    }
+
+                } else {
+
+                    fragmentHomeFab?.setImageResource(R.drawable.ic_baseline_add_24)
+                    fragmentHomeFab?.setOnClickListener {
+
+                        loadFragment(CreateCardFragment(), true, "create-fragment")
+                    }
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+                    // Do something
+                } else if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    // Do something
+                } else {
+                    // Do something
+                }
+            }
+        })
     }
 }
