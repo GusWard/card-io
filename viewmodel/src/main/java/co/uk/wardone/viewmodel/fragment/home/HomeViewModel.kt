@@ -5,7 +5,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
-import co.uk.wardone.model.database.AppDatabase
 import co.uk.wardone.model.database.Card
 import co.uk.wardone.model.repositories.CardRepository
 import co.uk.wardone.viewmodel.base.BaseViewData
@@ -23,7 +22,6 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
 
         homeItemsLiveData.observe(lifecycleOwner, observer)
 
-
         database?.let {  db ->
 
             cardRepository = CardRepository(db)
@@ -33,9 +31,7 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
     }
 
     override suspend fun viewModelActionBackground(
-        action: BaseViewModelAction,
-        database: AppDatabase,
-        lifecycleOwner: LifecycleOwner
+        action: BaseViewModelAction
     ) {
 
         when (action) {

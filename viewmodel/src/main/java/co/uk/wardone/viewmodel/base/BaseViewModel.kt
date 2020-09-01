@@ -22,20 +22,20 @@ abstract class BaseViewModel(
         viewActionLiveData.observe(lifecycleOwner, observer)
     }
 
-    abstract suspend fun viewModelActionBackground(action: BaseViewModelAction, database: AppDatabase, lifecycleOwner: LifecycleOwner)
+    abstract suspend fun viewModelActionBackground(action: BaseViewModelAction)
 
     protected fun viewAction(viewAction: BaseViewAction) {
 
         viewActionLiveData.postValue(viewAction)
     }
 
-    fun viewModelAction(action: BaseViewModelAction, lifecycleOwner: LifecycleOwner) {
+    fun viewModelAction(action: BaseViewModelAction) {
 
         GlobalScope.launch {
 
             database?.let {
 
-                viewModelActionBackground(action, it, lifecycleOwner)
+                viewModelActionBackground(action)
             }
         }
     }

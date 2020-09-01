@@ -6,6 +6,7 @@ import co.uk.wardone.model.api.CardService
 import co.uk.wardone.model.database.AppDatabase
 import co.uk.wardone.model.database.Card
 import co.uk.wardone.model.database.CardDao
+import co.uk.wardone.model.utils.calculateListDiff
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,14 +31,13 @@ class CardRepository(val database: AppDatabase) : BaseRepository<CardDao>() {
 
             override fun onResponse(call: Call<CardResponse>, response: Response<CardResponse>) {
 
-                /* We need to make sure we stay in sync with server db so delete any missing ones
+                /* We need to make sure we stay in sync with server db so delete any missing ones,
                 *  then create or update the latest ones */
-                val currentCards = cardDao?.getAllSync()
-                val latestCards = response.body()
-                val cardsToDelete = currentCards?.toHashSet()
-                cardsToDelete?.removeAll(latestCards?.data ?: emptyList())
-                cardDao?.deleteAll(cardsToDelete?.toList() ?: emptyList())
-                cardDao?.insertAll(latestCards?.data ?: emptyList())
+                val currentCards = cardDao?.getAllSync() ?: emptyList()
+                val latestCards = response.body()?.data ?: emptyList()
+                val cardsToDelete = calculateListDiff(currentCards, latestCards)
+                cardDao?.deleteAll(cardsToDelete)
+                cardDao?.insertAll(latestCards)
             }
 
             override fun onFailure(call: Call<CardResponse>, t: Throwable) {
@@ -56,6 +56,9 @@ class CardRepository(val database: AppDatabase) : BaseRepository<CardDao>() {
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
 
+                /* the app's card table does not have auto increment set as this should be done in backend.
+                 * we want our data to mirror the backend so push the card with default 0, allow server to
+                 * generate id, then in refresh the card will get added to app's db with shiny new id */
                 refresh()
                 onSuccess()
             }

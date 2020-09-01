@@ -51,22 +51,3 @@ abstract class BaseViewHolderFactory(
 
     abstract fun createViewHolder(parent: ViewGroup, type: Int): BaseViewHolder
 }
-
-class ScrollingAlphaScrollListener(val setAlpha: (Float) -> Unit) : RecyclerView.OnScrollListener() {
-
-    var position = 0
-
-    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-
-        super.onScrolled(recyclerView, dx, dy)
-        position += dy
-
-        if (position > 0) {
-
-            setAlpha(1 - (position / 100f))
-        }else {
-
-            setAlpha(1f)
-        }
-    }
-}

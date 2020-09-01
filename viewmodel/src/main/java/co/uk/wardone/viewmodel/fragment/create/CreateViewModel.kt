@@ -3,7 +3,6 @@ package co.uk.wardone.viewmodel.fragment.create
 import android.app.Application
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import co.uk.wardone.model.database.AppDatabase
 import co.uk.wardone.model.database.Card
 import co.uk.wardone.model.repositories.CardRepository
 import co.uk.wardone.viewmodel.base.BaseViewData
@@ -23,9 +22,7 @@ class CreateViewModel(application: Application) : BaseViewModel(application)  {
     }
 
     override suspend fun viewModelActionBackground(
-        action: BaseViewModelAction,
-        database: AppDatabase,
-        lifecycleOwner: LifecycleOwner
+        action: BaseViewModelAction
     ) {
 
         when (action) {
@@ -55,12 +52,5 @@ class CreateViewModel(application: Application) : BaseViewModel(application)  {
                 }
             }
         }
-    }
-
-    private fun validateCard(action: CreateViewModelActions.CreateCard): Boolean {
-
-        val titleValid = action.title.isEmpty().not()
-        val descriptionValid = action.description.isEmpty().not()
-        return titleValid && descriptionValid
     }
 }

@@ -12,8 +12,6 @@ class DiffUtilCallback<T : BaseRecyclerItem>(private val oldList: List<T>, priva
 
     override fun getNewListSize(): Int = newList.size
 
-    // TODO - items on account list page have different colors so when deleting each item needs to refreshAll
-    // TODO - so color should really be part of the item data itself
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean
             = oldList[oldItemPosition] == newList[newItemPosition]
 }
