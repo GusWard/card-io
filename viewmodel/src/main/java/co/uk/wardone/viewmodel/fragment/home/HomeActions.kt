@@ -15,4 +15,6 @@ class HomeViewActions {
     data class VerifyDeleteCard(val id: String) : BaseViewAction
 
     data class DeleteCardFailed(val message: String) : BaseViewAction
+
+    data class OpenLink(val url: String) : BaseViewAction
 }

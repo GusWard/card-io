@@ -33,13 +33,21 @@ class HomeViewHolderFactory(
 
             HomeItemTypes.SEARCH -> {
 
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_home_search, parent, false)
+                val view = LayoutInflater.from(parent.context).inflate(
+                    R.layout.item_home_search,
+                    parent,
+                    false
+                )
                 SearchViewHolder(view)
             }
 
             HomeItemTypes.CARD -> {
 
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_home_card, parent, false)
+                val view = LayoutInflater.from(parent.context).inflate(
+                    R.layout.item_home_card,
+                    parent,
+                    false
+                )
                 CardViewHolder(view)
             }
             else -> throw IllegalArgumentException("unknown view type $type")
@@ -52,11 +60,22 @@ class HomeViewHolderFactory(
 
             if (item is HomeData.SearchItem) {
 
-                itemView.itemHomeSearchInput.addTextChangedListener(object: TextWatcher {
+                itemView.itemHomeSearchInput.addTextChangedListener(object : TextWatcher {
 
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                    override fun beforeTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+                    }
 
-                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
 
                         viewModelAction(HomeViewModelActions.Search(s.toString()))
                     }
@@ -77,7 +96,17 @@ class HomeViewHolderFactory(
                 itemView.itemHomeCardDescription?.text = item.description
 
                 itemView.itemHomeCardLink?.text = item.link ?: ""
-                itemView.itemHomeCardLink?.visibility = if (item.link.isNullOrEmpty()) View.GONE else View.VISIBLE
+                if (item.link.isNullOrEmpty()) {
+
+                    itemView.itemHomeCardLink?.visibility = View.GONE
+                } else {
+
+                    itemView.itemHomeCardLink.visibility = View.VISIBLE
+                    itemView.setOnClickListener {
+
+                        viewAction(HomeViewActions.OpenLink(item.link ?: ""), item, itemView)
+                    }
+                }
 
                 itemView.itemHomeCardImage?.visibility = if (item.image.isNullOrEmpty()) View.GONE else View.VISIBLE
                 if (itemView.itemHomeCardImage != null && item.image != null) {

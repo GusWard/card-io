@@ -19,7 +19,18 @@
             android:id="@+id/itemHomeCardTitle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:text="Card View Title"/>
+            android:maxLines="2"
+            tools:text="Card View Title" />
+
+        <TextView
+            style="@style/B3"
+            android:id="@+id/itemHomeCardDescription"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/material_medium"
+            android:maxLines="3"
+            app:layout_constraintTop_toBottomOf="@id/itemHomeCardTitle"
+            tools:text="Card View Description"/>
 
         <TextView
             style="@style/B4"
@@ -28,17 +39,10 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/material_medium"
             android:textColor="@color/link_blue"
-            app:layout_constraintTop_toBottomOf="@id/itemHomeCardTitle"
+            android:maxLines="1"
+            android:ellipsize="marquee"
+            app:layout_constraintTop_toBottomOf="@id/itemHomeCardDescription"
             tools:text="Card View Link"/>
-
-        <TextView
-            style="@style/B3"
-            android:id="@+id/itemHomeCardDescription"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/material_medium"
-            app:layout_constraintTop_toBottomOf="@id/itemHomeCardLink"
-            tools:text="Card View Description"/>
 
         <ImageView
             android:id="@+id/itemHomeCardImage"
